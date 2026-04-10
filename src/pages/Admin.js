@@ -24,7 +24,7 @@ export default function Admin() {
   // ⏳ LOADING
   const [loading, setLoading] = useState(false)
 
-  // 🔐 SESSION
+  // 🔐 SESSION CHECK
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
       setSession(data.session)
@@ -68,8 +68,15 @@ export default function Admin() {
   const loadData = async () => {
     setLoading(true)
 
-    const { data: apps } = await supabase.from("applyFunding").select("*")
-    const { data: msgs } = await supabase.from("contact_message").select("*")
+    const { data: apps } = await supabase
+      .from("applyFunding")
+      .select("*")
+      .order("created_at", { ascending: false })
+
+    const { data: msgs } = await supabase
+      .from("contact_message")
+      .select("*")
+      .order("created_at", { ascending: false })
 
     setApplications(apps || [])
     setMessagesData(msgs || [])
@@ -118,8 +125,16 @@ export default function Admin() {
         <form className="login-box" onSubmit={handleLogin}>
           <h2>Admin Login</h2>
 
-          <input placeholder="Email" type="email" onChange={(e) => setEmail(e.target.value)} />
-          <input type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
+          <input
+            placeholder="Email"
+            onChange={(e) => setEmail(e.target.value)}
+          />
+
+          <input
+            type="password"
+            placeholder="Password"
+            onChange={(e) => setPassword(e.target.value)}
+          />
 
           <button className="btn">Login</button>
         </form>
@@ -138,6 +153,7 @@ export default function Admin() {
       {/* MESSAGE */}
       {message && <div className={`message ${type}`}>{message}</div>}
 
+      {/* HEADER */}
       <div className="admin-header">
         <h1>RAAE Admin Dashboard</h1>
         <button className="btn" onClick={handleLogout}>Logout</button>
@@ -145,7 +161,10 @@ export default function Admin() {
 
       {/* CREATE ADMIN */}
       <div style={{ margin: "20px" }}>
-        <button className="btn" onClick={() => setShowCreateAdmin(!showCreateAdmin)}>
+        <button
+          className="btn"
+          onClick={() => setShowCreateAdmin(!showCreateAdmin)}
+        >
           {showCreateAdmin ? "Close" : "Create Admin"}
         </button>
 
@@ -155,7 +174,6 @@ export default function Admin() {
 
             <input
               placeholder="Email"
-              type="email"
               value={newEmail}
               onChange={(e) => setNewEmail(e.target.value)}
             />
@@ -177,6 +195,15 @@ export default function Admin() {
         <h2>Funding Applications</h2>
 
         <table className="raae-table">
+          <thead>
+            <tr>
+              <th>Business</th>
+              <th>Email</th>
+              <th>Sector</th>
+              <th>Funding</th>
+            </tr>
+          </thead>
+
           <tbody>
             {applications.map(app => (
               <tr key={app.id}>
@@ -192,9 +219,17 @@ export default function Admin() {
 
       {/* MESSAGES */}
       <div className="admin-card">
-        <h2>Messages</h2>
+        <h2>Contact Messages</h2>
 
         <table className="raae-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Message</th>
+            </tr>
+          </thead>
+
           <tbody>
             {messagesData.map(msg => (
               <tr key={msg.id}>
