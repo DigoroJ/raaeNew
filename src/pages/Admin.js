@@ -1,34 +1,71 @@
-import { useEffect, useState } from "react"
+import { useState, useEffect } from "react"
 import { supabase } from "../supabaseClient"
 
 export default function Admin() {
 
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [username, setUsername] = useState("")
+  const [password, setPassword] = useState("")
+
   const [applications, setApplications] = useState([])
   const [messages, setMessages] = useState([])
 
+  // 🔐 Simple login check
+  const handleLogin = (e) => {
+    e.preventDefault()
+
+    if (username === "admin" && password === "test") {
+      setIsLoggedIn(true)
+    } else {
+      alert("Invalid credentials")
+    }
+  }
+
+  // 📊 Load data after login
   useEffect(() => {
-    loadData()
-  }, [])
+    if (isLoggedIn) {
+      loadData()
+    }
+  }, [isLoggedIn])
 
   const loadData = async () => {
-    const { data: apps } = await supabase
-      .from("applyFunding")
-      .select("*")
-      .order("created_at", { ascending: false })
-
-    const { data: msgs } = await supabase
-      .from("contact_message")
-      .select("*")
-      .order("created_at", { ascending: false })
+    const { data: apps } = await supabase.from("applyFunding").select("*")
+    const { data: msgs } = await supabase.from("contact_message").select("*")
 
     setApplications(apps || [])
     setMessages(msgs || [])
   }
 
+  // 🔒 LOGIN SCREEN
+  if (!isLoggedIn) {
+    return (
+      <div className="login-container">
+
+        <form className="login-box" onSubmit={handleLogin}>
+          <h2>Admin Login</h2>
+
+          <input
+            placeholder="Username"
+            onChange={(e) => setUsername(e.target.value)}
+          />
+
+          <input
+            type="password"
+            placeholder="Password"
+            onChange={(e) => setPassword(e.target.value)}
+          />
+
+          <button className="btn">Login</button>
+        </form>
+
+      </div>
+    )
+  }
+
+  // ✅ DASHBOARD (only shows after login)
   return (
     <div className="admin-container">
 
-      {/* HEADER */}
       <div className="admin-header">
         <h1>RAAE Admin Dashboard</h1>
       </div>
@@ -44,7 +81,6 @@ export default function Admin() {
               <th>Email</th>
               <th>Sector</th>
               <th>Funding</th>
-              <th>Status</th>
             </tr>
           </thead>
 
@@ -55,7 +91,6 @@ export default function Admin() {
                 <td>{app.email}</td>
                 <td>{app.sector}</td>
                 <td>R {app.required_funding}</td>
-                <td>{app.Status || "Pending"}</td>
               </tr>
             ))}
           </tbody>
@@ -67,14 +102,6 @@ export default function Admin() {
         <h2>Contact Messages</h2>
 
         <table className="raae-table">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Message</th>
-            </tr>
-          </thead>
-
           <tbody>
             {messages.map(msg => (
               <tr key={msg.id}>
