@@ -34,7 +34,7 @@ export default function FundingForm() {
     <form onSubmit={handleSubmit}>
       <input name="business_name" placeholder="Business Name" onChange={handleChange} />
       <input name="registration_number" placeholder="Registration Number" onChange={handleChange} />
-      <input name="email" placeholder="Email" onChange={handleChange} />
+      <input name="email" placeholder="Email"  type="email" onChange={handleChange} />
       <input name="contact_number" placeholder="Contact Number" onChange={handleChange} />
 
       <select name="sector" onChange={handleChange}>
