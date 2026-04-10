@@ -18,7 +18,7 @@ export default function ContactForm() {
     e.preventDefault()
 
     const { error } = await supabase
-      .from("contact_messages")
+      .from("contact_message")
       .insert([form])
 
     if (error) {
