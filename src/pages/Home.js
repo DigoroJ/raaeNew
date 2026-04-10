@@ -3,11 +3,18 @@ import Hero from "../Components/Hero"
 import FundingDistribution from "../Components/FundingDistribution"
 import FundingForm from "../Components/FundingForm"
 import ContactForm from "../Components/ContactForm"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 
 export default function Home() {
 
-  // 📊 Eligibility Calculator (from your original JS)
+  // 💬 MESSAGE
+  const [message, setMessage] = useState("")
+  const [type, setType] = useState("")
+
+  // ⏳ LOADING
+  const [loading, setLoading] = useState(false)
+
+  // 📊 Eligibility
   const [result, setResult] = useState("")
 
   const calculateFunding = () => {
@@ -26,13 +33,23 @@ export default function Home() {
     setResult("Estimated Funding Eligibility: R " + funding)
   }
 
+  // ⏱ AUTO HIDE MESSAGE
+  useEffect(() => {
+    if (message) {
+      setTimeout(() => setMessage(""), 3000)
+    }
+  }, [message])
+
   return (
     <div>
 
-      {/* HEADER */}
-      <Header />
+      {/* LOADER */}
+      {loading && <div className="loader"></div>}
 
-      {/* HERO */}
+      {/* MESSAGE */}
+      {message && <div className={`message ${type}`}>{message}</div>}
+
+      <Header />
       <Hero />
 
       {/* ABOUT */}
@@ -46,16 +63,21 @@ export default function Home() {
       {/* FUNDING DISTRIBUTION */}
       <FundingDistribution />
 
-      {/* FUNDING SECTION */}
+      {/* FUNDING */}
       <section id="funding-section">
         <h2>Enterprise Funding</h2>
 
         <div className="funding-layout">
 
-          {/* APPLY FORM */}
+          {/* APPLY */}
           <div className="funding-box">
             <h3>Apply For Funding</h3>
-            <FundingForm />
+
+            <FundingForm 
+              setLoading={setLoading}
+              setMessage={setMessage}
+              setType={setType}
+            />
           </div>
 
           {/* ELIGIBILITY */}
@@ -79,7 +101,12 @@ export default function Home() {
       {/* CONTACT */}
       <section id="contact">
         <h2>Contact Us</h2>
-        <ContactForm />
+
+        <ContactForm 
+          setLoading={setLoading}
+          setMessage={setMessage}
+          setType={setType}
+        />
       </section>
 
       {/* FOOTER */}

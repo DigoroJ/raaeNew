@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { supabase } from "../supabaseClient"
 
-export default function ContactForm() {
+export default function ContactForm({ setLoading, setMessage, setType }) {
 
   const [form, setForm] = useState({
     name: "",
@@ -17,16 +17,29 @@ export default function ContactForm() {
   const handleSubmit = async (e) => {
     e.preventDefault()
 
+    setLoading(true)
+
     const { error } = await supabase
       .from("contact_message")
       .insert([form])
 
     if (error) {
-      alert("Error: " + error.message)
+      setMessage(error.message)
+      setType("error")
     } else {
-      alert("Message sent!")
-      setForm({ name: "", email: "", phone: "", message: "" })
+      setMessage("Message sent successfully!")
+      setType("success")
+
+      // reset form
+      setForm({
+        name: "",
+        email: "",
+        phone: "",
+        message: ""
+      })
     }
+
+    setLoading(false)
   }
 
   return (
@@ -42,6 +55,7 @@ export default function ContactForm() {
 
       <input
         name="email"
+        type="email"
         placeholder="Email"
         value={form.email}
         onChange={handleChange}
