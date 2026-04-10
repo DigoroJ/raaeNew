@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 
 export default function Hero() {
 
+  // 🎞 Slides data
   const slides = [
     {
       img: "https://picsum.photos/1600/600?1",
@@ -17,28 +18,36 @@ export default function Hero() {
 
   const [index, setIndex] = useState(0)
 
+  // ✅ FIXED useEffect (no Netlify error)
   useEffect(() => {
     const interval = setInterval(() => {
       setIndex((prev) => (prev + 1) % slides.length)
     }, 5000)
 
     return () => clearInterval(interval)
-  }, [])
+  }, [slides.length]) // 👈 FIXED dependency
 
   return (
     <section className="hero">
-      <div className="hero-slide active">
-        <img src={slides[index].img} alt="" />
 
-        <div className="hero-text">
-          <h2>{slides[index].title}</h2>
-          <p>{slides[index].text}</p>
+      {slides.map((slide, i) => (
+        <div
+          key={i}
+          className={`hero-slide ${i === index ? "active" : ""}`}
+        >
+          <img src={slide.img} alt="slide" />
 
-          <a href="#funding-section" className="btn">
-            Apply For Funding
-          </a>
+          <div className="hero-text">
+            <h2>{slide.title}</h2>
+            <p>{slide.text}</p>
+
+            <a href="#funding-section" className="btn">
+              Apply For Funding
+            </a>
+          </div>
         </div>
-      </div>
+      ))}
+
     </section>
   )
 }
