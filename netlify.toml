@@ -5,3 +5,9 @@
 [build.environment]
   NODE_VERSION = "18"
   CI = "false"
+
+# ✅ React Router fix (VERY IMPORTANT)
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
