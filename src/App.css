@@ -1,38 +1,265 @@
-.App {
-  text-align: center;
+*{
+box-sizing:border-box;
+margin:0;
+padding:0;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+body{
+font-family:Arial;
+background:#f4f4f4;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+/* HEADER */
+
+header{
+background:#002f5b;
+color:white;
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:18px 6%;
+position:sticky;
+top:0;
+z-index:1000;
 }
 
-.App-header {
-  background-color: #282c34;
+nav ul{
+display:flex;
+list-style:none;
+gap:25px;
+}
+
+nav a{
+color:white;
+text-decoration:none;
+font-weight:bold;
+}
+
+.menu-toggle{
+display:none;
+font-size:28px;
+cursor:pointer;
+}
+
+/* HERO */
+
+.hero{
+position:relative;
+height:60vh;
+min-height:400px;
+overflow:hidden;
+}
+
+.hero-slide{
+position:absolute;
+width:100%;
+height:100%;
+opacity:0;
+transition:1s;
+}
+
+.hero-slide.active{
+opacity:1;
+}
+
+.hero-slide img{
+width:100%;
+height:100%;
+object-fit:cover;
+}
+
+.hero-text{
+position:absolute;
+top:50%;
+left:6%;
+transform:translateY(-50%);
+color:white;
+max-width:500px;
+}
+
+/* SECTIONS */
+
+section{
+padding:60px 6%;
+max-width:1200px;
+margin:auto;
+background:white;
+margin-top:20px;
+}
+
+/* TABLE */
+
+.raae-table{
+width:100%;
+border-collapse:collapse;
+margin-top:20px;
+}
+
+.raae-table th{
+background:#002f5b;
+color:white;
+padding:12px;
+text-align:left;
+}
+
+.raae-table td{
+padding:12px;
+border-bottom:1px solid #ddd;
+}
+
+.raae-table tr:nth-child(even){
+background:#f9f9f9;
+}
+
+/* FUNDING */
+
+.funding-layout{
+display:flex;
+gap:30px;
+margin-top:20px;
+}
+
+.funding-box{
+flex:1;
+background:#fafafa;
+padding:25px;
+box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+/* FORMS */
+
+input,select,textarea{
+width:100%;
+padding:10px;
+margin-bottom:10px;
+border:1px solid #ccc;
+}
+
+/* CONTACT */
+
+.contact-container{
+display:flex;
+gap:30px;
+}
+
+.contact-info{
+flex:1;
+background:#fafafa;
+padding:20px;
+}
+
+/* BUTTON */
+
+.btn{
+background:#002f5b;
+color:white;
+border:none;
+padding:12px 18px;
+cursor:pointer;
+}
+
+/* FOOTER */
+
+footer{
+background:#002f5b;
+color:white;
+text-align:center;
+padding:20px;
+margin-top:40px;
+}
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+.menu-toggle{
+display:block;
+}
+
+nav{
+display:none;
+width:100%;
+}
+
+nav.active{
+display:block;
+}
+
+nav ul{
+flex-direction:column;
+background:#002f5b;
+margin-top:15px;
+}
+
+nav li{
+padding:10px 0;
+border-top:1px solid rgba(255,255,255,0.2);
+}
+
+.funding-layout{
+flex-direction:column;
+}
+
+.contact-container{
+flex-direction:column;
+}
+
+.raae-table{
+display:block;
+overflow-x:auto;
+}
+
+section{
+padding:40px 20px;
+}
+
+}
+
+/* ADMIN DASHBOARD */
+
+.admin-container {
+  background: #f4f6f8;
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+}
+
+/* HEADER */
+.admin-header {
+  background: #184c6b;
   color: white;
+  text-align: center;
+  padding: 30px;
+  font-size: 24px;
+  font-weight: bold;
 }
 
-.App-link {
-  color: #61dafb;
+/* CARDS */
+.admin-card {
+  background: #fff;
+  margin: 20px;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.08);
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* TABLE STYLE OVERRIDE */
+.raae-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+}
+
+.raae-table th {
+  background: #184c6b;
+  color: white;
+  padding: 12px;
+  text-align: left;
+}
+
+.raae-table td {
+  padding: 12px;
+  border-bottom: 1px solid #ddd;
+}
+
+.raae-table tr:nth-child(even) {
+  background: #f9f9f9;
 }
